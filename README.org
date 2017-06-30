@@ -3,6 +3,8 @@
 #+EMAIL: stefanos.carlstrom@gmail.com
 #+PROPERTY: header-args:julia :session *hilbert-spaces:jl*
 
+[[https://travis-ci.org/jagot/HilbertSpaces.jl][https://travis-ci.org/jagot/HilbertSpaces.jl.svg?branch=master]]
+
 A small DSL for the kind of linear algebra that shows up in quantum
 mechanics. [[https://en.wikipedia.org/wiki/Bra–ket_notation][Dirac notation]] can be approximated as
 #+BEGIN_SRC julia :exports code
