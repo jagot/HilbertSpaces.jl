@@ -1,10 +1,11 @@
 #+TITLE: HilbertSpaces.jl
 #+AUTHOR: Stefanos Carlström
 #+EMAIL: stefanos.carlstrom@gmail.com
+#+PROPERTY: header-args:julia :session *hilbert-spaces:jl*
 
 A small DSL for the kind of linear algebra that shows up in quantum
 mechanics. [[https://en.wikipedia.org/wiki/Bra–ket_notation][Dirac notation]] can be approximated as
-#+BEGIN_SRC julia
+#+BEGIN_SRC julia :exports code
   (i|C|j)
 #+END_SRC
 where =i= is a /bra/ vector, =C= an operator, =j= a /ket/
@@ -19,11 +20,11 @@ Ideas/ponderings:
 + [ ] For different spaces, different vectors and operators can be
   defined, which follow the same linear algebra rules, but a spin
   operator might not act on a angular momentum ket (say).
-+ [ ] Deferred evaluation: the contraction =(i|C|j)= should return a
-  Scalar object which can subsequently be evaluated, either
-  numerically (using [[https://github.com/jagot/WIGXJPF.jl][WIGXJPF.jl]] for angular momentum algebra), or
-  analytically (where applicable/practical, maybe using [[https://github.com/JuliaPy/SymPy.jl][SymPy.jl]]?).
-  + [ ] How to represent =(i|j)=? Maybe as =(i|I|j)=, where =I= is the
++ [-] Deferred evaluation: the contraction =(i|C|j)= should return a
+  + [X] Scalar object which can subsequently be evaluated, either
+  + [X] numerically (using [[https://github.com/jagot/WIGXJPF.jl][WIGXJPF.jl]] for angular momentum algebra), or
+  + [ ] analytically (where applicable/practical, maybe using [[https://github.com/JuliaPy/SymPy.jl][SymPy.jl]]?).
+  + [X] How to represent =(i|j)=? Maybe as =(i|I|j)=, where =I= is the
     identity operator.
 + [ ] How to represent vectors belonging to coupled Hilbert spaces
   (e.g. |ℓm⊗χ〉)?
@@ -32,3 +33,36 @@ Ideas/ponderings:
 + [ ] How to represent linear combinations of operators? Useful for
   angular momentum representation of the Cartesian basis vectors; z/r
   is simply C₀¹, but x/r = [C₋₁¹ - C₁¹]/√2.
+
+* Simple usage example
+  #+BEGIN_SRC julia :exports code
+    using HilbertSpaces
+
+    s = AngularSpace
+  #+END_SRC
+
+  #+RESULTS:
+  : HilbertSpaces.AngularSpace
+  
+  #+BEGIN_SRC julia :exports code
+    i = bra(s)(1, 0)
+    j = ket(s)(0, 0)
+    C = op(s)(1,0)
+  #+END_SRC
+
+  #+RESULTS:
+  | HilbertSpaces.SphericalTensor(1//1 | 0//1) |
+
+  #+BEGIN_SRC julia :exports both
+    v = (i|C|j)
+  #+END_SRC
+
+  #+RESULTS:
+
+  #+BEGIN_SRC julia :exports both
+    float(v)
+  #+END_SRC
+
+  #+RESULTS:
+  : 0.5773502691896258
+
