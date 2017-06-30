@@ -1,0 +1,34 @@
+#+TITLE: HilbertSpaces.jl
+#+AUTHOR: Stefanos Carlström
+#+EMAIL: stefanos.carlstrom@gmail.com
+
+A small DSL for the kind of linear algebra that shows up in quantum
+mechanics. [[https://en.wikipedia.org/wiki/Bra–ket_notation][Dirac notation]] can be approximated as
+#+BEGIN_SRC julia
+  (i|C|j)
+#+END_SRC
+where =i= is a /bra/ vector, =C= an operator, =j= a /ket/
+vector. Parentheses (although not strictly necessary, from Julia's
+point of view) are used instead of 〈, 〉.
+
+A bra is a /dual vector/ of a ket, or a /functional/, which when
+acting on a ket, yields a scalar. An operator on the space spanned by
+kets (bras) will map a ket (bra) onto a ket (bra).
+
+Ideas/ponderings:
++ [ ] For different spaces, different vectors and operators can be
+  defined, which follow the same linear algebra rules, but a spin
+  operator might not act on a angular momentum ket (say).
++ [ ] Deferred evaluation: the contraction =(i|C|j)= should return a
+  Scalar object which can subsequently be evaluated, either
+  numerically (using [[https://github.com/jagot/WIGXJPF.jl][WIGXJPF.jl]] for angular momentum algebra), or
+  analytically (where applicable/practical, maybe using [[https://github.com/JuliaPy/SymPy.jl][SymPy.jl]]?).
+  + [ ] How to represent =(i|j)=? Maybe as =(i|I|j)=, where =I= is the
+    identity operator.
++ [ ] How to represent vectors belonging to coupled Hilbert spaces
+  (e.g. |ℓm⊗χ〉)?
++ [ ] The transpose of a column vector of kets should return a row vector
+  of bras.
++ [ ] How to represent linear combinations of operators? Useful for
+  angular momentum representation of the Cartesian basis vectors; z/r
+  is simply C₀¹, but x/r = [C₋₁¹ - C₁¹]/√2.
