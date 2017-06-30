@@ -4,8 +4,9 @@
 # Wigner 3-j symbols.
 
 using WIGXJPF
+using UnicodeFun
 
-import Base: transpose, |, identity, float, ==
+import Base: transpose, |, identity, float, ==, show
 
 abstract AngularSpace <: HilbertSpace
 
@@ -52,6 +53,17 @@ function float(s::AngScalar)
     red = wig3j(s.b.j, s.C.k, s.k.j,
                 0, 0, 0)
     (-1)^(2s.b.j-s.b.m)*√((2s.b.j+1)*(2s.k.j+1))*full*red
+end
+
+
+function show(stream::IO, s::AngScalar)
+    rat(v) = den(v) == 1 || num(v) == 0 ?
+        string(num(v)) : to_fraction(num(v), den(v))
+    write(stream::IO, @sprintf("〈%s;%s|%s;%s|%s;%s〉 ≈ %0.5g",
+                               rat(s.b.j), rat(s.b.m),
+                               rat(s.C.k), rat(s.C.q),
+                               rat(s.k.j), rat(s.k.m),
+                               float(s)))
 end
 
 export AngularSpace

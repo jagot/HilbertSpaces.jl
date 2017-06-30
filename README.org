@@ -53,11 +53,12 @@ Ideas/ponderings:
   #+RESULTS:
   | HilbertSpaces.SphericalTensor(1//1 | 0//1) |
 
-  #+BEGIN_SRC julia :exports both
+  #+BEGIN_SRC julia :exports both :results verbatim
     v = (i|C|j)
   #+END_SRC
 
   #+RESULTS:
+  : 〈1;0|1;0|0;0〉 ≈ 0.57735
 
   #+BEGIN_SRC julia :exports both
     float(v)
