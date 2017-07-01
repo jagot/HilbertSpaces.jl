@@ -50,14 +50,15 @@ Ideas/ponderings:
 
   We then pick two vectors (one normal, one dual), and a spherical
   tensor:
-  #+BEGIN_SRC julia :exports code
+  #+BEGIN_SRC julia :exports code :results verbatim
     i = bra(s)(1, 0)
     j = ket(s)(0, 0)
-    C = op(s)(1,0)
+    C = op(s)(1, 0)
+    i, j, C
   #+END_SRC
 
   #+RESULTS:
-  | HilbertSpaces.SphericalTensor(1//1 | 0//1) |
+  : (〈p|,|s〉,C₀⁽¹⁾)
 
   To calculate the contraction (or matrix element), we simply write
   #+BEGIN_SRC julia :exports both :results verbatim
@@ -65,7 +66,7 @@ Ideas/ponderings:
   #+END_SRC
 
   #+RESULTS:
-  : 〈1;0|1;0|0;0〉 ≈ 0.57735
+  : 〈p|C₀⁽¹⁾|s〉 ≈ 0.57735
 
   To get the numerical value, we use
   #+BEGIN_SRC julia :exports both
@@ -86,7 +87,6 @@ Ideas/ponderings:
     C = op(s)(1,0)
     for i in 1:N
         b = bra(s)(i-1, 0)
-        print(b)
         for j in 1:N
             k = ket(s)(j-1, 0)
             z[i,j] = round(float(b|C|k), 4)

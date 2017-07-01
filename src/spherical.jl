@@ -28,8 +28,8 @@ transpose(b::AngBra) = AngKet(b.j, b.m)
 transpose(k::AngKet) = AngBra(k.j, k.m)
 
 type SphericalTensor <: Operator
-    k::Rational
-    q::Rational
+    k::Integer # Rank
+    q::Integer
 end
 ==(C1::SphericalTensor, C2::SphericalTensor) =
     (C1.k == C2.k) && (C1.q == C2.q)
@@ -55,15 +55,58 @@ function float(s::AngScalar)
     (-1)^(2s.b.j-s.b.m)*√((2s.b.j+1)*(2s.k.j+1))*full*red
 end
 
+const ells = "spdfghiklmnopqrtuvwxyz"
 
-function show(stream::IO, s::AngScalar)
+function partial_wave_str(ell, m)
     rat(v) = den(v) == 1 || num(v) == 0 ?
         string(num(v)) : to_fraction(num(v), den(v))
-    write(stream::IO, @sprintf("〈%s;%s|%s;%s|%s;%s〉 ≈ %0.5g",
-                               rat(s.b.j), rat(s.b.m),
-                               rat(s.C.k), rat(s.C.q),
-                               rat(s.k.j), rat(s.k.m),
-                               float(s)))
+
+    if ell == 0
+        "s"
+    elseif ell == 1
+        if m == 0
+            "p"
+        elseif m == 1
+            "p⁺"
+        else
+            "p⁻"
+        end
+    elseif den(ell) == 1 && den(m) == 1
+        @sprintf("%s;%i", ells[num(ell)+1], m)
+    else
+        @sprintf("%s;%s", rat(ell), rat(m))
+    end
+end
+
+show(stream::IO, b::AngBra) =
+    write(stream::IO, @sprintf("〈%s|", partial_wave_str(b.j, b.m)))
+show(stream::IO, k::AngKet) =
+    write(stream::IO, @sprintf("|%s〉", partial_wave_str(k.j, k.m)))
+show(stream::IO, C::SphericalTensor) =
+    write(stream::IO, @sprintf("C%s%s",
+                               to_subscript(C.q),
+                               to_superscript("($(C.k))")))
+
+function show(stream::IO, Ck::Tuple{SphericalTensor, AngKet})
+    show(stream, Ck[1])
+    show(stream, Ck[2])
+end
+
+function show(stream::IO, bC::Tuple{AngBra, SphericalTensor})
+    show(stream, bC[1])
+    show(stream, bC[2])
+end
+
+function show(stream::IO, s::AngScalar)
+    show(stream, s.b)
+    if s.C.k == 0 && s.C.q == 0
+        write(stream, partial_wave_str(s.k.j, s.k.m))
+        write(stream, "〉")
+    else
+        show(stream, s.C)
+        show(stream, s.k)
+    end
+    write(stream::IO, @sprintf(" ≈ %0.5g", float(s)))
 end
 
 export AngularSpace
