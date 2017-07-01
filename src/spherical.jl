@@ -13,6 +13,7 @@ abstract AngularSpace <: HilbertSpace
 type AngBra <: Bra
     j::Rational
     m::Rational
+    AngBra(j,m) = abs(m) > j ? error("Invalid bra, |$(m)| > $(j)") : new(j, m)
 end
 bra(::Type{AngularSpace}) = AngBra
 ==(b1::Bra, b2::Bra) = (b1.j == b2.j) && (b1.m == b2.m)
@@ -20,6 +21,7 @@ bra(::Type{AngularSpace}) = AngBra
 type AngKet <: Ket
     j::Rational
     m::Rational
+    AngKet(j,m) = abs(m) > j ? error("Invalid ket, |$(m)| > $(j)") : new(j, m)
 end
 ket(::Type{AngularSpace}) = AngKet
 ==(k1::Ket, k2::Ket) = (k1.j == k2.j) && (k1.m == k2.m)
@@ -30,6 +32,7 @@ transpose(k::AngKet) = AngBra(k.j, k.m)
 type SphericalTensor <: Operator
     k::Integer # Rank
     q::Integer
+    SphericalTensor(k, q) = abs(q) > k ? error("Invalid tensor, |$(q)| > $(k) ") : new(k, q)
 end
 ==(C1::SphericalTensor, C2::SphericalTensor) =
     (C1.k == C2.k) && (C1.q == C2.q)

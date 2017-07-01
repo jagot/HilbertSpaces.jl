@@ -7,6 +7,12 @@ i = bra(S)(1, 0)
 j = ket(S)(0, 0)
 C = op(S)(1, 0)
 
+@testset "Init" begin
+    @test_throws ErrorException bra(S)(1, 2)
+    @test_throws ErrorException ket(S)(1, 2)
+    @test_throws ErrorException op(S)(1, 2)
+end
+
 @testset "Comparisons" begin
     @test i == HilbertSpaces.AngKet(1, 0)'
     @test j == HilbertSpaces.AngBra(0, 0)'
