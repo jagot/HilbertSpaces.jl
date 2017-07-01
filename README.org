@@ -4,6 +4,8 @@
 #+PROPERTY: header-args:julia :session *hilbert-spaces:jl*
 
 [[https://travis-ci.org/jagot/HilbertSpaces.jl][https://travis-ci.org/jagot/HilbertSpaces.jl.svg?branch=master]]
+[[https://coveralls.io/github/jagot/HilbertSpaces.jl?branch=master][https://coveralls.io/repos/github/jagot/HilbertSpaces.jl/badge.svg?branch=master]]
+[[https://codecov.io/gh/jagot/HilbertSpaces.jl][https://codecov.io/gh/jagot/HilbertSpaces.jl/branch/master/graph/badge.svg]]
 
 A small DSL for the kind of linear algebra that shows up in quantum
 mechanics. [[https://en.wikipedia.org/wiki/Bra–ket_notation][Dirac notation]] can be approximated as
